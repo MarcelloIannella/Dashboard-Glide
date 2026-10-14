@@ -1,85 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reports Chart</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grafico Segnalazioni</title>
+<!-- Inclusione di Chart.js tramite CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <style>
         body {
+
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
             height: 100vh;
+
             margin: 0;
+
             background-color: transparent;
+
         }
 
         .chart-container {
+
             width: 100%;
+
             max-width: 380px;
+
             padding: 15px;
+
             background: #ffffff;
+
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
         }
-    </style>
+</style>
 </head>
 <body>
+ 
     <div class="chart-container">
-        <canvas id="reportsChart"></canvas>
-    </div>
-
+<canvas id="segnalazioniChart"></canvas>
+</div>
+ 
     <script>
-        const params = new URLSearchParams(window.location.search);
 
-        function getCount(parameter) {
-            const value = Number.parseInt(params.get(parameter) ?? "0", 10);
-            return Number.isNaN(value) ? 0 : value;
-        }
+        // Legge i parametri passati nell'URL (es. ?contaAperte=5&contaInCorso=3&contaChiuse=10)
 
-        const open = getCount("segnalazioniAperte");
-        const inProgress = getCount("segnalazioniInCorso");
-        const closed = getCount("segnalazoniChiuse");
+        const urlParams = new URLSearchParams(window.location.search);
 
-        const canvas = document.getElementById("reportsChart");
+        const contaAperte = parseInt(urlParams.get('contaAperte')) || 0;
 
-        new Chart(canvas, {
-            type: "pie",
+        const contaInCorso = parseInt(urlParams.get('contaInCorso')) || 0;
+
+        const contaChiuse = parseInt(urlParams.get('contaChiuse')) || 0;
+ 
+        const ctx = document.getElementById('segnalazioniChart').getContext('2d');
+
+        new Chart(ctx, {
+
+            type: 'pie',
+
             data: {
-                labels: ["segnalazioniAperte", "segnalazioniInCorso", "segnalazioniChiuse"],
+
+                labels: ['Aperte', 'In corso', 'Chiuse'],
+
                 datasets: [{
-                    data: [segnalazioniAperte, segnalazioniInCorso, segnalazioniChiuse],
-                    backgroundColor: ["#ffc107", "#17a2b8", "#28a745"],
+
+                    data: [contaAperte, contaInCorso, contaChiuse],
+
+                    backgroundColor: [
+
+                        '#ffc107', // Giallo/Ambra per Aperte
+
+                        '#17a2b8', // Celeste per In corso
+
+                        '#28a745'  // Verde per Chiuse
+
+                    ],
+
                     borderWidth: 2,
-                    borderColor: "#ffffff"
+
+                    borderColor: '#ffffff'
+
                 }]
+
             },
+
             options: {
+
                 responsive: true,
+
                 plugins: {
+
                     legend: {
-                        position: "bottom",
+
+                        position: 'bottom',
+
                         labels: {
+
                             boxWidth: 12,
-                            font: {
-                                size: 13
-                            }
+
+                            font: { size: 13 }
+
                         }
+
                     },
+
                     title: {
+
                         display: true,
-                        text: "Reports Overview",
-                        font: {
-                            size: 15
-                        }
+
+                        text: 'Panoramica Segnalazioni',
+
+                        font: { size: 15 }
+
                     }
+
                 }
+
             }
+
         });
-    </script>
+</script>
+ 
 </body>
 </html>
+ 
