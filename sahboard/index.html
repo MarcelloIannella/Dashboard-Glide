@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grafico Segnalazioni</title>
+<!-- Inclusione di Chart.js tramite CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: transparent;
+        }
+        .chart-container {
+            width: 100%;
+            max-width: 380px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+</style>
+</head>
+<body>
+ 
+    <div class="chart-container">
+<canvas id="segnalazioniChart"></canvas>
+</div>
+ 
+    <script>
+        // Legge i parametri passati nell'URL (es. ?aperte=5&in_corso=3&chiuse=10)
+        const urlParams = new URLSearchParams(window.location.search);
+        const aperte = parseInt(urlParams.get('aperte')) || 0;
+        const inCorso = parseInt(urlParams.get('in_corso')) || 0;
+        const chiuse = parseInt(urlParams.get('chiuse')) || 0;
+ 
+        const ctx = document.getElementById('segnalazioniChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Aperte', 'In corso', 'Chiuse'],
+                datasets: [{
+                    data: [aperte, inCorso, chiuse],
+                    backgroundColor: [
+                        '#ffc107', // Giallo/Ambra per Aperte
+                        '#17a2b8', // Celeste per In corso
+                        '#28a745'  // Verde per Chiuse
+                    ],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            font: { size: 13 }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Panoramica Segnalazioni',
+                        font: { size: 15 }
+                    }
+                }
+            }
+        });
+</script>
+ 
+</body>
+</html>
